@@ -1,0 +1,6 @@
+name: Simple manual workflow
+
+on:
+    push:
+        - main
+jobs:        
