@@ -1,0 +1,26 @@
+name: Concurrenct PR
+
+on:
+    pull_request:
+        branches: [ main ]
+concurrency:
+    group: build-and-test
+    
+jobs:
+   build-and-test-on-pr:
+    name: Build and Test On Pull Request
+    
+    runs-on: ubuntu-latest
+    steps:
+
+        - name: Build teh Code
+          run: |
+            echo "Starting Code Build"
+            sleep 2m
+            echo "Finish Code Build"
+
+        - name: Test The Code 
+          run: |
+            echo "Starting Code Build"
+            sleep 2m
+            echo "Finish Code Build"
