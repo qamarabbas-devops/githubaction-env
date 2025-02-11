@@ -12,24 +12,32 @@ jobs:
         
         steps:
             - uses: actions/checkout@v4
+              with:
+                fetch-depth: 0  # Ensure all branches and files are fetched
+
+            - name: Debug: Check project directory
+              run: ls -R ${{ github.workspace }}
 
             - name: Setup .NET Core
               uses: actions/setup-dotnet@v3
               with:
                 dotnet-version: '7.0'
 
-            - name: Install dependencies
-              run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.csproj"
+            - name: Restore dependencies
+              working-directory: mywebapp
+              run: dotnet restore mywebapp.csproj
               
             - name: Build
-              run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.csproj" --configuration Release --no-restore
+              working-directory: mywebapp
+              run: dotnet build mywebapp.csproj --configuration Release --no-restore
               
             - name: Test
-              run: dotnet test "${{ github.workspace }}/mywebapp/mywebapp.csproj" --no-restore --verbosity normal
+              working-directory: mywebapp
+              run: dotnet test mywebapp.csproj --no-restore --verbosity normal
               
             - name: Publish
-              run: |
-               dotnet publish "${{ github.workspace }}/mywebapp/mywebapp.csproj" -c Release -o mywebapp 
+              working-directory: mywebapp
+              run: dotnet publish mywebapp.csproj -c Release -o mywebapp 
                
             - name: Upload a Build Artifact
               uses: actions/upload-artifact@v4
@@ -37,6 +45,4 @@ jobs:
                 name: mywebappbuildartifacts
                 path: mywebapp/**
                 if-no-files-found: error
-                
                 retention-days: 90
-              
