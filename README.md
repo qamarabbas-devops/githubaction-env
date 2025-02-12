@@ -1,8 +1,1 @@
-The workflow should run 
-
-
-Workflow should NOT run
-
-Workflow should NOT run
-
-Workflow should  run
+This should trigger the workflow
