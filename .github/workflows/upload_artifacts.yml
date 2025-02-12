@@ -22,7 +22,12 @@ jobs:
                 dotnet-version: '7.0'
 
             - name: Install dependencies
-              run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.csproj"
+              run: |
+               if [ ! -f "${{ github.workspace }}/mywebapp/mywebapp.csproj" ]; then
+               echo "Error: mywebapp.csproj not found!"
+               exit 1
+               fi
+               dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.csproj"
               
             - name: Build
               run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.csproj" --configuration Release --no-restore
