@@ -20,14 +20,16 @@ jobs:
               uses: actions/setup-dotnet@v3
               with:
                 dotnet-version: '7.0'
-
-            - name: Install dependencies
+            - name: Validate Project File
               run: |
-               if [ ! -f "${{ github.workspace }}/mywebapp/mywebapp.csproj" ]; then
-               echo "Error: mywebapp.csproj not found!"
-               exit 1
-               fi
-               dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.csproj"
+                  PROJECT_PATH="${{ github.workspace }}/mywebapp/mywebapp.csproj"
+                  if [ ! -f "$PROJECT_PATH" ]; then
+                    echo "❌ Error: Project file not found at $PROJECT_PATH"
+                    exit 1
+                  fi
+                  echo "✅ Project file found!"
+            - name: Install dependencies
+              run: dotnet restore "${{ github.workspace }}/mywebapp/mywebapp.csproj"
               
             - name: Build
               run: dotnet build "${{ github.workspace }}/mywebapp/mywebapp.csproj" --configuration Release --no-restore
